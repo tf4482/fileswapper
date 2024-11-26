@@ -1,10 +1,7 @@
 import os
 import json
-import platform
+import shutil
 
-
-from yapl_python.robocopy_update import robocopy_update
-from yapl_python.rsync_to_subdirs import rsync_to_subdirs
 from yapl_python.directory_traversal import traverse_and_apply
 
 
@@ -18,19 +15,26 @@ def load_config():
 if __name__ == "__main__":
     try:
         config = load_config()
-        source_file = config["source_file"]
-        target_dir = config["target_dir"]
+        file_pairs = config["file_pairs"]
 
-        # Choose the correct copy function based on the operating system
-        system = platform.system()
-        copy_function = robocopy_update if system == "Windows" else rsync_to_subdirs
+        def copy_if_exists_and_newer(src, dest_dir):
+            dest_file = os.path.join(dest_dir, os.path.basename(src))
+            if os.path.exists(dest_file):
+                src_mtime = os.path.getmtime(src)
+                dest_mtime = os.path.getmtime(dest_file)
+                if src_mtime > dest_mtime:
+                    shutil.copy2(src, dest_file)
 
-        # Copy the file to all subdirectories
-        traverse_and_apply(target_dir, lambda subdir: copy_function(source_file, subdir))
+        for pair in file_pairs:
+            source_file = pair["source_file"]
+            target_dir = pair["target_dir"]
 
-        # Additionally, copy the file to the main target directory
-        copy_function(source_file, target_dir)
+            # Copy the file to all subdirectories if it exists and is newer
+            traverse_and_apply(target_dir, lambda subdir: copy_if_exists_and_newer(source_file, subdir))
 
-        print(f"The file was successfully copied to '{target_dir}' and all its subdirectories (only if newer).")
+            # Additionally, copy the file to the main target directory if it exists and is newer
+            copy_if_exists_and_newer(source_file, target_dir)
+
+        print("The files were successfully copied to their respective target directories and subdirectories (only if newer and if they exist).")
     except Exception as e:
         print(f"An error occurred: {e}")

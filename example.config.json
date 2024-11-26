@@ -1,0 +1,12 @@
+{
+    "file_pairs": [
+        {
+            "source_file": "path/to/source/file.txt",
+            "target_dir": "path/to/target/directory"
+        },
+        {
+            "source_file": "path/to/source/file.txt",
+            "target_dir": "path/to/target/directory"
+        }
+    ]
+}
