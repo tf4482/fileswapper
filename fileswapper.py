@@ -2,7 +2,7 @@ import os
 import json
 import shutil
 
-from yapl_python.directory_traversal import traverse_and_apply
+from utils_python.directory_traversal import traverse_and_apply
 
 
 def load_config():
@@ -14,8 +14,10 @@ def load_config():
 
 if __name__ == "__main__":
     try:
+        print("Loading configuration...")
         config = load_config()
         file_pairs = config["file_pairs"]
+        print("Configuration loaded successfully.")
 
         def copy_if_exists_and_newer(src, dest_dir):
             dest_file = os.path.join(dest_dir, os.path.basename(src))
@@ -24,10 +26,17 @@ if __name__ == "__main__":
                 dest_mtime = os.path.getmtime(dest_file)
                 if src_mtime > dest_mtime:
                     shutil.copy2(src, dest_file)
+                    print(f"File {src} copied to {dest_file} (newer).")
+                else:
+                    print(f"File {src} is not newer than {dest_file}. No copy needed.")
+            else:
+                print(f"Destination file {dest_file} does not exist. No copy needed.")
 
         for pair in file_pairs:
             source_file = pair["source_file"]
             target_dir = pair["target_dir"]
+
+            print(f"Processing pair: Source = {source_file}, Target Directory = {target_dir}")
 
             # Copy the file to all subdirectories if it exists and is newer
             traverse_and_apply(target_dir, lambda subdir: copy_if_exists_and_newer(source_file, subdir))
