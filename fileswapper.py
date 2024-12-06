@@ -26,11 +26,11 @@ if __name__ == "__main__":
                 dest_mtime = os.path.getmtime(dest_file)
                 if src_mtime > dest_mtime:
                     shutil.copy2(src, dest_file)
-                    print(f"File {src} copied to {dest_file} (newer).")
+                    print(f"\033[92mFile {src} copied to {dest_file} (newer).\033[0m")
                 else:
-                    print(f"File {src} is not newer than {dest_file}. No copy needed.")
+                    pass
             else:
-                print(f"Destination file {dest_file} does not exist. No copy needed.")
+                pass
 
         for pair in file_pairs:
             source_file = pair["source_file"]
@@ -39,7 +39,7 @@ if __name__ == "__main__":
             print(f"Processing pair: Source = {source_file}, Target Directory = {target_dir}")
 
             # Copy the file to all subdirectories if it exists and is newer
-            traverse_and_apply(target_dir, lambda subdir: copy_if_exists_and_newer(source_file, subdir, 1))
+            traverse_and_apply(target_dir, lambda subdir: copy_if_exists_and_newer(source_file, subdir),2)
 
             # Additionally, copy the file to the main target directory if it exists and is newer
             copy_if_exists_and_newer(source_file, target_dir)
