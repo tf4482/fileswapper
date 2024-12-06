@@ -39,11 +39,14 @@ if __name__ == "__main__":
             print(f"Processing pair: Source = {source_file}, Target Directory = {target_dir}")
 
             # Copy the file to all subdirectories if it exists and is newer
-            traverse_and_apply(target_dir, lambda subdir: copy_if_exists_and_newer(source_file, subdir))
+            traverse_and_apply(target_dir, lambda subdir: copy_if_exists_and_newer(source_file, subdir, 1))
 
             # Additionally, copy the file to the main target directory if it exists and is newer
             copy_if_exists_and_newer(source_file, target_dir)
 
         print("The files were successfully copied to their respective target directories and subdirectories (only if newer and if they exist).")
+
+        # Wait for a key press before exiting
+        input("Press any key to exit...")
     except Exception as e:
         print(f"An error occurred: {e}")
