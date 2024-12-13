@@ -20,6 +20,13 @@ if __name__ == "__main__":
         print("Configuration loaded successfully.")
 
         def copy_if_exists_and_newer(src, dest_dir):
+            """
+            Copy the source file to the destination directory if it exists and is newer.
+
+            Args:
+                src (str): Path to the source file.
+                dest_dir (str): Path to the destination directory.
+            """
             dest_file = os.path.join(dest_dir, os.path.basename(src))
             if os.path.exists(dest_file):
                 src_mtime = os.path.getmtime(src)
