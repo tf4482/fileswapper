@@ -2,11 +2,13 @@
     "file_pairs": [
         {
             "source_file": "path/to/source/file.txt",
-            "target_dir": "path/to/target/directory"
+            "target_dir": "path/to/target/directory",
+            "depth": 2
         },
         {
             "source_file": "path/to/source/file.txt",
-            "target_dir": "path/to/target/directory"
+            "target_dir": "path/to/target/directory",
+            "depth": 2
         }
     ]
 }
