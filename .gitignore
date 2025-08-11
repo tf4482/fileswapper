@@ -16,10 +16,9 @@
 /.history
 /.fleet
 /.phpunit.cache
+/test_downloads
 files/*
 !files/*example*
-vars/*
-!vars/*example*
 *spec
 **/__pycache__
 *.vscode
@@ -50,3 +49,9 @@ desktop.ini
 config.json
 auth.json
 auth.json.bak
+ansible.cfg
+.ansible.cfg
+.notes*
+acst-dl-config.json
+local_install.bash
+notes.txt
