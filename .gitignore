@@ -114,3 +114,5 @@ bootstrap.sh
 local_install.bash
 push.bat
 sync-imports.py
+deploy.bash
+python-project-reviser.bash
